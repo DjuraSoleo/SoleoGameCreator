@@ -11,7 +11,7 @@ externalDocs:
   description: Soleo games website
   url: https://soleo.games/
 servers:
-  - url: https://localhost:8080/api/v1
+  - url: http://localhost:8080/api/v1
 tags:
   - name: question
     description: Manage Questions
@@ -24,7 +24,7 @@ tags:
       description: Find out more
       url: http://swagger.io
 paths:
-  /question:
+  /questions:
     post:
       tags:
         - question
@@ -44,7 +44,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Question'          
+                $ref: '#/components/schemas/Question'
         '400':
           description: Invalid input
         '422':
@@ -129,26 +129,26 @@ paths:
                     type: integer
                     description: Offset used for pagination
                     example: 0
-                  questions:
+                  items:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Question'         
+                      $ref: '#/components/schemas/Question'
             text/csv:
               schema:
                 type: string
                 example: |
-                  questionText,answerText,category,difficulty,type,tag1,tag2
-                  Which is the most trophy football club in Macedonia {player name}?,FK Vardar,sport,easy,corporate,Macedonia,Vardar
-              
+                  questionText,answerText,category,difficulty,type
+                  Which is the most trophy football club in Macedonia {player name}?,FK Vardar,sport,easy,corporate
+
         '400':
           description: Invalid input
         '422':
           description: Validation exception
         '409':
           description: conflict
-  /question/import:
+  /questions/import:
     post:
-      tags: 
+      tags:
         - question
       summary: Import questions
       description: Import questions
@@ -160,8 +160,8 @@ paths:
             schema:
               type: string
               example: |
-                questionText,answerText,category,difficulty,type,tag1,tag2
-                Which is the most trophy football club in Macedonia {player name}?,FK Vardar,sport,easy,corporate,Macedonia,Vardar
+                questionText,answerText,category,difficulty,type
+                Which is the most trophy football club in Macedonia {player name}?,FK Vardar,sport,easy,corporate
         required: true
       responses:
         '200':
@@ -169,14 +169,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Question'          
+                $ref: '#/components/schemas/Question'
         '400':
           description: Invalid input
         '422':
           description: Validation exception
         '409':
-          description: conflict        
-  /task:
+          description: conflict
+  /tasks:
     post:
       tags:
         - task
@@ -196,7 +196,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Task'          
+                $ref: '#/components/schemas/Task'
         '400':
           description: Invalid input
         '422':
@@ -281,26 +281,26 @@ paths:
                     type: integer
                     description: Offset used for pagination
                     example: 0
-                  tasks:
+                  items:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Task'         
+                      $ref: '#/components/schemas/Task'
             text/csv:
               schema:
                 type: string
                 example: |
-                  text,category,difficulty,type,tag1,tag2
-                  Do something,FK Vardar,sport,easy,corporate,Macedonia,Vardar
-              
+                  text,category,difficulty,type
+                  Do something,corporate,easy,sport
+
         '400':
           description: Invalid input
         '422':
           description: Validation exception
         '409':
           description: conflict
-  /task/import:
+  /tasks/import:
     post:
-      tags: 
+      tags:
         - task
       summary: Import task
       description: Import task
@@ -312,8 +312,8 @@ paths:
             schema:
               type: string
               example: |
-                text,category,difficulty,type,tag1,tag2
-                Do something,FK Vardar,sport,easy,corporate,Macedonia,Vardar
+                text,category,difficulty,type
+                Do something,corporate,easy,sport
         required: true
       responses:
         '200':
@@ -321,13 +321,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Task'          
+                $ref: '#/components/schemas/Task'
         '400':
           description: Invalid input
         '422':
           description: Validation exception
         '409':
-          description: conflict   
+          description: conflict
 components:
   schemas:
     Question:
@@ -363,12 +363,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Translation'
-          example: [{"language":"Español", "translation":"¿Cuál es el club de fútbol con más trofeos de Macedonia, {player name}?"}]
+          example: [{"language":"Español", "value":"¿Cuál es el club de fútbol con más trofeos de Macedonia, {player name}?"}]
         answerTranslations:
           type: array
           items:
             $ref: '#/components/schemas/Translation'
-          example: [{"language":"Español", "translation":"FK Vardar"}]
+          example: [{"language":"Español", "value":"FK Vardar"}]
         parameters:
           type: array
           items:
@@ -403,7 +403,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Translation'
-          example: [{"language":"Español", "translation":"hacer algo"}]
+          example: [{"language":"Español", "value":"hacer algo"}]
     Translation:
       required:
         - language
@@ -412,7 +412,7 @@ components:
       properties:
         language:
           type: string
-        value: 
+        value:
           type: string
     Parameter:
       required:
