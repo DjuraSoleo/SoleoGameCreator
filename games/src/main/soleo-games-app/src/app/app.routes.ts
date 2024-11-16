@@ -1,8 +1,8 @@
-import { TestComponent } from './test/test.component';
+import { MainScreenComponent } from './main-screen/main-screen.component';
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
-    path:'test', component:TestComponent
+    path: '', component: MainScreenComponent
   }
 ];
