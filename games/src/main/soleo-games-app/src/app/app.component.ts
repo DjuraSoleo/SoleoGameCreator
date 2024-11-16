@@ -8,7 +8,6 @@ import { MatDividerModule } from '@angular/material/divider';
   standalone: true,
   imports: [RouterOutlet, MatDividerModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
 })
 export class AppComponent {
 

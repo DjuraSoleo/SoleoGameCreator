@@ -1,38 +1,50 @@
 <div class="flex flex-row bg-white mat-elevation-z8 items-center justify-between">
-<div class="flex flex-row gap-4 p-4">
-  <button mat-flat-button color="primary">
-    <mat-icon>add</mat-icon>
-    Add
-  </button>
-  <button mat-button>
-    <span class="fi fi-gb"></span>
-    <mat-icon>arrow_drop_down</mat-icon>
-  </button>
-  <button mat-button>
-    Filter
-    <mat-icon>filter_list</mat-icon>
-  </button>
-  <button mat-button>
-    Sort
-    <mat-icon>import_export</mat-icon>
-  </button>
-  <button mat-button>
-    Export
-    <mat-icon>file_upload</mat-icon>
-  </button>
-  <button mat-button>
-    Auto Export
-    <mat-icon>file_upload</mat-icon>
-  </button>
-</div>
-<div class="flex mt-4 mx-4">
-  <form class="example-form !m-0">
-    <mat-form-field class="example-full-width">
-      <mat-label>Search</mat-label>
-      <input matInput value="">
-    </mat-form-field>
-  </form>
-</div>
+  <div class="flex flex-row gap-4 p-4">
+    <button mat-flat-button color="primary" (click) = "addNew()">
+      <mat-icon>add</mat-icon>
+      Add
+    </button>
+    <button mat-button [matMenuTriggerFor]="languageMenu">
+      <span class="fi fi-{{defaultLanguage.countryCode}}"></span>
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <mat-menu #languageMenu="matMenu">
+      <button mat-menu-item *ngFor="let lang of languages" (click) = "languageSelectedClick(lang)">
+        <span class="fi fi-{{lang.countryCode}} mr-2"></span>
+        {{ lang.language }}
+      </button>
+    </mat-menu>
+
+    <button mat-button (click) = "filterClick()">
+      Filter
+      <mat-icon>filter_list</mat-icon>
+    </button>
+    <button mat-button [matMenuTriggerFor]="sortMenu">
+      Sort
+      <mat-icon>import_export</mat-icon>
+    </button>
+    <mat-menu #sortMenu="matMenu">
+      <button mat-menu-item *ngFor="let param of sortParameters" (click) = "sortItemClick(param)">
+        <mat-icon class="mr-2">{{param.matIcon}}</mat-icon>
+        <p class="pr-2 !m-0">By {{param.propertyName}}</p>
+      </button>
+    </mat-menu>
+    <button mat-button (click) = "exportClick()">
+      Export
+      <mat-icon>file_upload</mat-icon>
+    </button>
+    <button mat-button (click) = "autoExportClick()">
+      Auto Export
+      <mat-icon>file_upload</mat-icon>
+    </button>
+  </div>
+  <div class="flex mt-4 mx-4">
+    <form class="example-form !m-0">
+      <mat-form-field class="example-full-width">
+        <mat-label>Search</mat-label>
+        <input matInput value="" [(ngModel)]="searchTerm" (ngModelChange)="searchFilterChange($event)" name="search">
+      </mat-form-field>
+    </form>
+  </div>
 </div>
 <mat-divider></mat-divider>
-
