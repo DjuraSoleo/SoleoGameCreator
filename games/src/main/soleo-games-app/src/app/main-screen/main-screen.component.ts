@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
-import { ActionsBarComponent } from '../shell/actions-bar/actions-bar.component';
+import { ActionsBarComponent } from './ui/actions-bar/actions-bar.component';
+import { SideNavComponent } from './ui/side-nav/side-nav.component';
+import { PreviewTableComponent } from './ui/preview-table/preview-table.component';
 
 @Component({
   selector: 'app-main-screen',
   standalone: true,
-  imports: [ActionsBarComponent],
+  imports: [ActionsBarComponent, SideNavComponent, PreviewTableComponent],
   templateUrl: './main-screen.component.html',
+  styleUrl: './main-screen.component.css'
+
 })
 export class MainScreenComponent {
   languages: Language[] = [{
@@ -53,7 +57,17 @@ export class MainScreenComponent {
 
   }
 
+  itemsCategoryChanged(category: ItemCategory) {
+    console.log(category);
+  }
 
+
+}
+
+export enum ItemCategory {
+  corporate = "corporate",
+  personalized = "personalized",
+  tasks = "tasks"
 }
 
 export interface Language {
