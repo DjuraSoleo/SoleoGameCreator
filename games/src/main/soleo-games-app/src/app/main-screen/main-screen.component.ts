@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActionsBarComponent } from './ui/actions-bar/actions-bar.component';
 import { SideNavComponent } from './ui/side-nav/side-nav.component';
-import { PreviewTableComponent } from './ui/preview-table/preview-table.component';
+import { PreviewItems, PreviewTableComponent } from './ui/preview-table/preview-table.component';
 
 @Component({
   selector: 'app-main-screen',
@@ -61,7 +61,14 @@ export class MainScreenComponent {
     console.log(category);
   }
 
+  onEditClick(item: any) {
+    console.log(item);
+  }
 
+  onSelectedItems(selectedItems: any) {
+    console.log(selectedItems);
+
+  }
 }
 
 export enum ItemCategory {
