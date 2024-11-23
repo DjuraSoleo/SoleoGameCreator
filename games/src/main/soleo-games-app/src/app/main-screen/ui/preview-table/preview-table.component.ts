@@ -1,97 +1,50 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { NgFor } from '@angular/common';
 import { TableCellComponent } from './table-cell/table-cell.component';
+import { PreviewItem } from '../../main-screen.component';
+import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 
-export interface PreviewItems {
-  Question: string;
-  Answer: string;
-  Category: string;
-  Tags: string[];
-  Difficulty: String;
-  Languages: LanguageToCountryCode[];
-}
 
-export interface LanguageToCountryCode {
-  language: string,
-  countryCode: string
-}
-
-const ITEMS_DATA: PreviewItems[] = [
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }, { language: "French", countryCode: "fr" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Chemistry'], Difficulty: "Medium", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Chemistry'], Difficulty: "Medium", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Sport", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Sport", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Medium", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Titanic'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Sport", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Capital Cities', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Titanic', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Chemistry', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-  { Question: "The capital of Slovenia?", Answer: 'Ljubljana', Category: "Geography", Tags: ['Ljubljana', 'Slovenia'], Difficulty: "Easy", Languages: [{ language: "Englis", countryCode: "gb" }] },
-];
 @Component({
   selector: 'app-preview-table',
   standalone: true,
-  imports: [MatTableModule, MatCheckboxModule, NgFor, TableCellComponent],
+  imports: [MatTableModule, MatCheckboxModule, NgFor, TableCellComponent, MatSortModule],
   templateUrl: './preview-table.component.html',
 })
-export class PreviewTableComponent implements OnInit {
+export class PreviewTableComponent implements OnChanges, AfterViewInit {
+
+  private _liveAnnouncer = inject(LiveAnnouncer);
+  @ViewChild(MatSort) sort!: MatSort;
+
+  @Input() itemsData!: PreviewItem[];
+  @Input() itemsColumns!: string[];
+  @Input() searchTerm!: string;
+
+  @Output() editClick = new EventEmitter<PreviewItem>();
+  @Output() selectedItems = new EventEmitter<PreviewItem[]>();
 
 
-  @Output() editClick = new EventEmitter<PreviewItems>();
-  @Output() selectedItems = new EventEmitter<any>();
-
-
-  dataSource!: MatTableDataSource<any>;
-  dataColumns: string[] = [];
+  dataSource!: MatTableDataSource<PreviewItem>;
   allColumns: string[] = [];
 
-  selection = new SelectionModel<any>(true, []);
+  selection = new SelectionModel<PreviewItem>(true, []);
 
-  ngOnInit() {
-    if (ITEMS_DATA.length > 0) {
-      this.dataColumns = Object.keys(ITEMS_DATA[0]);
-      this.allColumns = ['Select', ...this.dataColumns, 'Edit'];
-      this.dataSource = new MatTableDataSource(ITEMS_DATA);
+  constructor() {
+    this.dataSource = new MatTableDataSource<PreviewItem>([]);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['itemsData']) {
+      this.allColumns = ['Select', ...this.itemsColumns, 'Edit'];
+      this.dataSource = new MatTableDataSource(this.itemsData);
+      this.dataSource.sort = this.sort;
+    }
+    if (changes['searchTerm']) {
+      this.dataSource.filter = this.searchTerm.trim().toLowerCase();
     }
   }
 
@@ -111,7 +64,7 @@ export class PreviewTableComponent implements OnInit {
 
   }
 
-  onRowClick(row: any, event: Event) {
+  onRowClick(row: PreviewItem, event: Event) {
     // Prevent row selection if edit button or its children are clicked
     const target = event.target as HTMLElement;
     if (target.closest('button, mat-icon')) {
@@ -125,7 +78,19 @@ export class PreviewTableComponent implements OnInit {
     this.selectedItems.emit(this.selection.selected);
   }
 
-  onEditClick(item: PreviewItems) {
+  onEditClick(item: PreviewItem) {
     this.editClick.emit(item);
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+  }
+
+  announceSortChange(sortState: Sort) {
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
   }
 }

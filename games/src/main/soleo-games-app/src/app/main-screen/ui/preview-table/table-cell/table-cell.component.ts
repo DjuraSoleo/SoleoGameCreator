@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { LanguageToCountryCode } from '../preview-table.component';
 import { MatIconModule } from '@angular/material/icon';
+import { LanguageToCountryCode } from '../../../main-screen.component';
+import { MatIconButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-table-cell',
   standalone: true,
-  imports: [CommonModule, MatIconModule],
+  imports: [CommonModule, MatIconModule, MatIconButton],
   templateUrl: './table-cell.component.html',
 })
 export class TableCellComponent implements OnInit {
@@ -71,6 +72,9 @@ export class TableCellComponent implements OnInit {
 
     switch (this.columnName) {
       case 'Question':
+        this.cellType = CellType.text;
+        break;
+      case 'Task':
         this.cellType = CellType.text;
         break;
       case 'Answer':

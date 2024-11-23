@@ -8,7 +8,7 @@
   </div>
   <div *ngSwitchCase="cellTypeEnum.languageIcons"> <span *ngFor="let language of languages"
       class="fi fi-{{language.countryCode}} m-1"></span></div>
-  <button mat-icon-button *ngSwitchCase="cellTypeEnum.iconButtonElement" (click)="onEditClick()">
+  <button mat-icon-button (click) = "onEditClick()" *ngSwitchCase="cellTypeEnum.iconButtonElement">
     <mat-icon>edit</mat-icon>
   </button>
 </div>

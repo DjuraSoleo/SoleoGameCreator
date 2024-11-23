@@ -1,4 +1,4 @@
-<table mat-table [dataSource]="dataSource">
+<table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
   <ng-container matColumnDef="Select">
     <th mat-header-cell *matHeaderCellDef>
       <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
@@ -12,8 +12,8 @@
     </td>
   </ng-container>
 
-  <ng-container *ngFor="let column of dataColumns" [matColumnDef]="column">
-    <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+  <ng-container *ngFor="let column of itemsColumns" [matColumnDef]="column">
+    <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column }}</th>
     <td mat-cell *matCellDef="let element"><app-table-cell [dataToShow]="element[column]"
         [columnName]="column"></app-table-cell></td>
   </ng-container>
@@ -24,6 +24,6 @@
         columnName="Edit" (editClick) = "onEditClick(element)"></app-table-cell></td>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="allColumns; sticky: true"></tr>
-  <tr mat-row *matRowDef="let row; columns: allColumns;" (click)="onRowClick(row, $event)"></tr>
+  <tr mat-header-row *matHeaderRowDef="allColumns; sticky: true" class="!bg-stone-200"></tr>
+  <tr mat-row *matRowDef="let row; columns: allColumns;" (click)="onRowClick(row, $event)" class="!bg-white"></tr>
 </table>

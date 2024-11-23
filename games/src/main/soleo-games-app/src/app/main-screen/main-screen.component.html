@@ -6,12 +6,16 @@
   <div class="flex flex-row flex-grow h-full">
 
     <div class="w-1/12 min-w-44">
-      <app-side-nav (categoryClicked)="itemsCategoryChanged($event)" ></app-side-nav>
+      <app-side-nav (categoryClicked)="itemsCategoryChanged($event)"></app-side-nav>
     </div>
+
+    <mat-divider vertical class="mx-2"></mat-divider>
+
 
     <div class="w-11/12">
-      <app-preview-table (editClick) = "onEditClick($event)" (selectedItems) = "onSelectedItems($event)"></app-preview-table>
+      <app-preview-table [itemsData]="itemsData" [itemsColumns]="itemsColumns" [searchTerm]="searchTerm" (editClick)="onEditClick($event)"
+        (selectedItems)="onSelectedItems($event)"></app-preview-table>
+      <mat-divider class="flex-shrink-0"></mat-divider>
     </div>
-
   </div>
 </div>
