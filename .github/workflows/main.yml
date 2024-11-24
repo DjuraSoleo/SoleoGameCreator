@@ -50,7 +50,7 @@ jobs:
       # Step 5: Install dependencies
       - name: Install dependencies
         working-directory: ./games/src/main/soleo-games-app
-        run: pnpm install --frozen-lockfile  # Similar to npm ci, ensures exact versions
+        run: pnpm install
 
       # Step 6: Build the Angular application
       - name: Build
