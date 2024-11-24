@@ -1,36 +1,30 @@
 name: Deploy Angular app to GitHub Pages
 
-# Defines when this workflow will run
 on:
   push:
     branches:
-      - main  # Triggers on every push to main branch
+      - main
 
-# Jobs are a set of steps that execute on the same runner
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest  # Uses Ubuntu as the operating system
+    runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository code
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          persist-credentials: false  # Required for the GitHub Pages deploy action
+          persist-credentials: false
 
-      # Step 2: Setup Node.js environment
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'  # Using Node.js 20
+          node-version: '20'
 
-      # Step 3: Install pnpm package manager
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8  # Using pnpm version 8
+          version: 8
 
-      # Step 4: Setup pnpm cache
       - name: Get pnpm store directory
         shell: bash
         run: |
@@ -44,24 +38,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
-      - name: Change to app directory
-        run: cd ./games/src/main/soleo-games-app
-
-      # Step 5: Install dependencies
       - name: Install dependencies
         working-directory: ./games/src/main/soleo-games-app
-        run: pnpm install
+        run: pnpm install --frozen-lockfile  # Now we can use frozen-lockfile since you have pnpm-lock.yaml
 
-      # Step 6: Build the Angular application
       - name: Build
+        working-directory: ./games/src/main/soleo-games-app
         run: pnpm run build --configuration=production --base-href="/${{ github.event.repository.name }}/"
-        # --configuration=production: Uses production configuration
-        # --base-href: Sets the base URL for the application to match GitHub Pages URL structure
 
-      # Step 7: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: ../resources/static  # The folder containing your built application
-          branch: gh-pages  # The branch that GitHub Pages will use
-          clean: true  # Automatically remove old files
+          folder: games/src/main/soleo-games-app/dist/soleo-games-app/browser  # Angular 18 output path
+          branch: gh-pages
+          clean: true
