@@ -25,22 +25,19 @@ jobs:
         with:
           version: 8
 
-      - name: Get pnpm store directory
-        shell: bash
+      # Debug step to verify lockfile
+      - name: Debug files
         run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - name: Setup pnpm cache
-        uses: actions/cache@v3
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+          cd games/src/main/soleo-games-app
+          pwd
+          ls -la
+          cat package.json
+          echo "Checking if lockfile exists:"
+          test -f pnpm-lock.yaml && echo "Lockfile exists" || echo "Lockfile does not exist"
 
       - name: Install dependencies
         working-directory: ./games/src/main/soleo-games-app
-        run: pnpm install --frozen-lockfile  # Now we can use frozen-lockfile since you have pnpm-lock.yaml
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build
         working-directory: ./games/src/main/soleo-games-app
@@ -49,6 +46,6 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: games/src/main/soleo-games-app/dist/soleo-games-app/browser  # Angular 18 output path
+          folder: games/src/main/soleo-games-app/dist/soleo-games-app/browser
           branch: gh-pages
           clean: true
