@@ -46,6 +46,6 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: games/src/main/soleo-games-app/dist/soleo-games-app/browser
+          folder: games/src/main/resources/static
           branch: gh-pages
           clean: true
