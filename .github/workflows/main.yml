@@ -1,0 +1,67 @@
+name: Deploy Angular app to GitHub Pages
+
+# Defines when this workflow will run
+on:
+  push:
+    branches:
+      - main  # Triggers on every push to main branch
+
+# Jobs are a set of steps that execute on the same runner
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest  # Uses Ubuntu as the operating system
+
+    steps:
+      # Step 1: Checkout the repository code
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false  # Required for the GitHub Pages deploy action
+
+      # Step 2: Setup Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'  # Using Node.js 20
+
+      # Step 3: Install pnpm package manager
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8  # Using pnpm version 8
+
+      # Step 4: Setup pnpm cache
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Change to app directory
+        run: cd ./games/src/main/soleo-games-app
+
+      # Step 5: Install dependencies
+      - name: Install dependencies
+        working-directory: ./games/src/main/soleo-games-app
+        run: pnpm install --frozen-lockfile  # Similar to npm ci, ensures exact versions
+
+      # Step 6: Build the Angular application
+      - name: Build
+        run: pnpm run build --configuration=production --base-href="/${{ github.event.repository.name }}/"
+        # --configuration=production: Uses production configuration
+        # --base-href: Sets the base URL for the application to match GitHub Pages URL structure
+
+      # Step 7: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: ../resources/static  # The folder containing your built application
+          branch: gh-pages  # The branch that GitHub Pages will use
+          clean: true  # Automatically remove old files
