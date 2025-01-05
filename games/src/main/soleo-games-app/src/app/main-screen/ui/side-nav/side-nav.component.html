@@ -1,12 +1,12 @@
 <div class="bg-white w-full h-full mat-elevation-z8 flex flex-col items-start pl-4">
   <div class="m-2">
-    <button mat-button (click)="onCategoryClick(itemCategory.corporate)">
+    <button mat-button [color]="isCorporateActive ?  'warn':'primary'"  (click)="onCategoryClick(itemCategory.corporate)">
       <mat-icon><img src="corporate-icon.svg" alt="Logo"></mat-icon>
       Corporate</button>
-    <button mat-button (click)="onCategoryClick(itemCategory.personalized)"> <mat-icon><img src="personalized-icon.svg" alt="Logo"
+    <button mat-button [color]="isPersonalizedActive ?  'warn':'primary'" (click)="onCategoryClick(itemCategory.personalized)"> <mat-icon><img src="personalized-icon.svg" alt="Logo"
           class="w-14 h-auto"></mat-icon>
       Personalized</button>
-    <button mat-button (click)="onCategoryClick(itemCategory.tasks)"><mat-icon> <img src="task-icon.svg" alt="Logo"
+    <button mat-button [color]="isTasksActive ?  'warn':'primary'" (click)="onCategoryClick(itemCategory.tasks)"><mat-icon> <img src="task-icon.svg" alt="Logo"
           class="w-14 h-auto"></mat-icon>
       Tasks</button>
   </div>
