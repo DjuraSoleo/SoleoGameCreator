@@ -13,7 +13,7 @@
   </ng-container>
 
   <ng-container *ngFor="let column of itemsColumns" [matColumnDef]="column">
-    <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column }}</th>
+    <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column | titlecase}}</th>
     <td mat-cell *matCellDef="let element"><app-table-cell [dataToShow]="element[column]"
         [columnName]="column"></app-table-cell></td>
   </ng-container>

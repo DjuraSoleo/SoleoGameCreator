@@ -9,7 +9,7 @@ data class QuestionResponse(
     val difficulty: String,
     val type: String,
     val answerText: String?,
-    val questionTranslations: List<TranslationResponse>? = null,
+    val questionTranslations: List<TranslationResponse>,
     val answerTranslations: List<TranslationResponse>? = null,
     val parameters: List<ParameterResponse>? = null
 ) {
@@ -22,7 +22,7 @@ data class QuestionResponse(
                 difficulty = question.difficulty,
                 type = question.type,
                 answerText = question.answerText,
-                questionTranslations = question.questionTranslations?.map { TranslationResponse.fromTranslation(it) },
+                questionTranslations = question.questionTranslations.map { TranslationResponse.fromTranslation(it) },
                 answerTranslations = question.answerTranslations?.map { TranslationResponse.fromTranslation(it) },
                 parameters = question.parameters?.map { ParameterResponse.fromCustomizationParameter(it) }
             )

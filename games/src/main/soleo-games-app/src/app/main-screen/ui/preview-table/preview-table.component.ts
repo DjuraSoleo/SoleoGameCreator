@@ -2,17 +2,17 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { AfterViewInit, Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { NgFor } from '@angular/common';
+import { CommonModule, NgFor } from '@angular/common';
 import { TableCellComponent } from './table-cell/table-cell.component';
-import { PreviewItem } from '../../main-screen.component';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { PreviewItem } from '../../model/preview-item';
 
 
 @Component({
   selector: 'app-preview-table',
   standalone: true,
-  imports: [MatTableModule, MatCheckboxModule, NgFor, TableCellComponent, MatSortModule],
+  imports: [MatTableModule, MatCheckboxModule, NgFor, TableCellComponent, MatSortModule, CommonModule],
   templateUrl: './preview-table.component.html',
 })
 export class PreviewTableComponent implements OnChanges, AfterViewInit {

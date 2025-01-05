@@ -2,9 +2,10 @@
   <p *ngSwitchCase="cellTypeEnum.text">{{dataToShow}}</p>
   <div class="{{bgColor}} inline-block rounded px-2 py-1x" *ngSwitchCase="cellTypeEnum.singleColorElement">
     {{dataToShow}}</div>
-  <p *ngSwitchCase="cellTypeEnum.tags">
+  <div *ngSwitchCase="cellTypeEnum.tags">
   <div *ngFor="let tag of tagsBackgrounds" class="{{tag.background}} inline-block rounded m-1 px-2 py-1x">
     {{ tag.tag }}
+  </div>
   </div>
   <div *ngSwitchCase="cellTypeEnum.languageIcons"> <span *ngFor="let language of languages"
       class="fi fi-{{language.countryCode}} m-1"></span></div>

@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { LanguageToCountryCode } from '../../../main-screen.component';
 import { MatIconButton } from '@angular/material/button';
+import { LanguageToCountryCode } from '../../../model/preview-item';
 
 @Component({
   selector: 'app-table-cell',
@@ -71,30 +71,30 @@ export class TableCellComponent implements OnInit {
   ngOnInit(): void {
 
     switch (this.columnName) {
-      case 'Question':
+      case 'question':
         this.cellType = CellType.text;
         break;
-      case 'Task':
+      case 'task':
         this.cellType = CellType.text;
         break;
-      case 'Answer':
+      case 'answer':
         this.cellType = CellType.text;
         break;
-      case 'Category':
+      case 'category':
         this.cellType = CellType.singleColorElement;
         this.bgColor = this.getColorClassForWord(this.dataToShow);
         break;
-      case 'Tags':
+      case 'tags':
         this.cellType = CellType.tags;
         this.dataToShow.forEach((tag: string) => {
           this.tagsBackgrounds.push({ tag: tag, background: this.getColorClassForWord(tag) });
         });
         break;
-      case 'Difficulty':
+      case 'difficulty':
         this.cellType = CellType.singleColorElement;
         this.bgColor = this.getColorClassForWord(this.dataToShow);
         break;
-      case 'Languages':
+      case 'languages':
         this.cellType = CellType.languageIcons;
         this.languages = this.dataToShow;
         break;
