@@ -49,6 +49,7 @@ class CorsConfig {
         val source = UrlBasedCorsConfigurationSource()
         val config = CorsConfiguration().apply {
             addAllowedOrigin("https://editor-next.swagger.io/")
+            addAllowedOrigin("http://localhost:4200/")
             addAllowedMethod("*")
             addAllowedHeader("*")
             allowCredentials = true

@@ -9,7 +9,7 @@ data class CreateQuestionRequest(
     val difficulty: String,
     val type: String,
     val answerText: String? = null,
-    val questionTranslations: List<TranslationRequest>? = null,
+    val questionTranslations: List<TranslationRequest>,
     val answerTranslations: List<TranslationRequest>? = null,
     val parameters: List<ParameterRequest>? = null
 ) {
@@ -21,7 +21,7 @@ data class CreateQuestionRequest(
             difficulty = this.difficulty,
             type = this.type,
             answerText = this.answerText,
-            questionTranslations = this.questionTranslations?.map { it.toTranslation() },
+            questionTranslations = this.questionTranslations.map { it.toTranslation() },
             answerTranslations = this.answerTranslations?.map { it.toTranslation() },
             parameters = this.parameters?.map { it.toCustomizationParameter() }
         )

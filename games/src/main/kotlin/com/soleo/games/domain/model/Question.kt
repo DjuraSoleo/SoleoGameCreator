@@ -7,7 +7,7 @@ data class Question(
     val difficulty: String,
     val type: String,
     val answerText: String? = null,
-    val questionTranslations: List<Translation>? = null,
+    val questionTranslations: List<Translation>,
     val answerTranslations: List<Translation>? = null,
     val parameters: List<CustomizationParameter>? = null
 ) {

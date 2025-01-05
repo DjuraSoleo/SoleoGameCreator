@@ -35,7 +35,7 @@ jobs:
 
       - name: Build
         working-directory: ./games/src/main/soleo-games-app
-        run: pnpm run build --configuration=production --base-href="/${{ github.event.repository.name }}/"
+        run: pnpm run build --configuration=development --base-href="/${{ github.event.repository.name }}/"
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4

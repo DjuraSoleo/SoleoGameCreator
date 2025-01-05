@@ -333,6 +333,7 @@ components:
     Question:
       required:
         - questionText
+        - questionTranslations
         - category
         - tags
         - difficulty
